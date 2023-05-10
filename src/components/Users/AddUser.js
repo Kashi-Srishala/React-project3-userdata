@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import Wrapper from '../Helpers/Wrapper';
 import Card from '../UI/Card';
 import Button from '../UI/Button';
 import ErrorModal from '../UI/ErrorModal';
@@ -8,11 +8,12 @@ import classes from './AddUser.module.css';
 const AddUser = (props) => {
   const [enteredUsername, setEnteredUsername] = useState('');
   const [enteredAge, setEnteredAge] = useState('');
+  const [enteredCollegename, setEnteredCollegename] = useState('');
   const [error, setError] = useState();
 
   const addUserHandler = (event) => {
     event.preventDefault();
-    if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
+    if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0 ||enteredCollegename.trim().length === 0) {
       setError({
         title: 'Invalid input',
         message: 'Please enter a valid name and age (non-empty values).',
@@ -26,9 +27,10 @@ const AddUser = (props) => {
       });
       return;
     }
-    props.onAddUser(enteredUsername, enteredAge);
+    props.onAddUser(enteredUsername, enteredAge, enteredCollegename);
     setEnteredUsername('');
     setEnteredAge('');
+    setEnteredCollegename('');
   };
 
   const usernameChangeHandler = (event) => {
@@ -39,12 +41,16 @@ const AddUser = (props) => {
     setEnteredAge(event.target.value);
   };
 
+  const collegenameChangeHandler = (event) => {
+    setEnteredCollegename(event.target.value);
+  };
+
   const errorHandler = () => {
     setError(null);
   };
 
   return (
-    <div>
+    <Wrapper>
       {error && (
         <ErrorModal
           title={error.title}
@@ -68,10 +74,17 @@ const AddUser = (props) => {
             value={enteredAge}
             onChange={ageChangeHandler}
           />
+          <label htmlFor="collegename">Collegename</label>
+          <input
+            id="collegename"
+            type="text"
+            value={enteredCollegename}
+            onChange={collegenameChangeHandler}
+          />
           <Button type="submit">Add User</Button>
         </form>
       </Card>
-    </div>
+    </Wrapper>
   );
 };
 
